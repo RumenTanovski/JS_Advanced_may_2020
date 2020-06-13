@@ -1,0 +1,166 @@
+//     1. Sum First Last
+function sumFirstLast(arrString) {
+    let sum = Number(arrString[0]) + Number(arrString[arrString.length - 1]);
+    console.log(sum);
+}
+
+//sumFirstLast(['20', '30', '40']);
+
+
+//    2. Even Position Element
+
+function evenElement(arr) {
+    const arrEven = [];
+    arrEven.push(arr[0]);
+
+    for (let i = 1; i < arr.length; i++) {
+        if (i % 2 === 0) {
+            arrEven.push(arr[i]);
+        };
+    }
+
+    console.log(arrEven.join(' '));
+}
+
+//evenElement(['20', '30', '40']);
+
+
+//    3. Negative / Positive Numbers
+
+function negativPositivOrder(arr) {
+
+    const arrNew = [];
+
+    for (let i = 0; i < arr.length; i++) {
+        let num = arr[i];
+
+        if (arr[i] < 0) {
+            arrNew.unshift(num);
+        } else {
+            arrNew.push(num);
+        }
+    }
+
+    arrNew.forEach(item => {
+        console.log(item)
+    });
+}
+
+//negativPositivOrder([7, -2, 8, 9]);
+
+
+//    4. Last K Numbers Sequence
+
+function lastKSequence(n, k) {
+    let arr = [1];
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+    for (let i = 1; i < n; i++) {
+        current = arr.slice(-k).reduce(reducer);
+        arr.push(current);
+    }
+
+    console.log(arr.join(' '));
+}
+
+//lastKSequence(6,3);
+
+
+//    5. Process Odd Numbers
+function processOdd(arr) {
+    let arrNew = [];
+
+    for (let i = 1; i < arr.length; i++) {
+        if (i % 2 !== 0) {
+            arrNew.push(arr[i] * 2);
+        }
+    }
+
+    arrNew.reverse();
+    console.log(arrNew.join(' '));
+}
+//processOdd([10, 15, 20, 25]);
+
+//    6. Smallest Two Numbers
+function smallestTwo(arr) {
+
+    let minA = Math.min(...arr);
+
+    arr.splice(arr.indexOf(minA), 1);
+
+    let minB = Math.min(...arr);
+
+    console.log(minA + ' ' + minB);
+
+}
+
+//smallestTwo([3, 0, 10, 4, 7, 3]);
+
+
+//     7. Biggest Element
+
+function biggestElement(matrix) {
+
+    let biggest = matrix[0][0];
+
+    matrix.forEach(array => {
+        array.forEach(item => {
+            if (biggest <= item) {
+                biggest = item;
+            }
+        });
+    });
+
+    console.log(biggest);
+}
+
+//biggestElement([[20, 40],
+// [10, 60]]);
+
+//    8. Diagonal Sums
+function diagonalSums(input) {
+    let firstDiagonal = 0;
+    let secondDiagonal = 0;
+    let firstIndex = 0;
+    let secondIndex = input[0].length - 1;
+    input.forEach(array => {
+        firstDiagonal += array[firstIndex++];
+        secondDiagonal += array[secondIndex--];
+
+    });
+    console.log(firstDiagonal + ' ' + secondDiagonal);
+}
+
+//diagonalSums([[20, 40],
+//    [10, 60]]);
+
+//     9. Equal Neighbors
+
+function equalNeighbors(matrix) {
+    let sum = 0;
+    let row = matrix.length - 1;
+    let col = matrix[0].length - 1;
+
+    for (let r = 0; r < row; r++) {
+        for (let c = 0; c <= col; c++) {
+            if (matrix[r][c] === matrix[r + 1][c]) {
+                sum++;
+            };
+        }
+    }
+
+    for (let r = 0; r <= row; r++) {
+        for (let c = 0; c < col; c++) {
+            if (matrix[r][c] === matrix[r][c + 1]) {
+                sum++;
+            };
+        }
+    }
+
+    console.log(sum);
+}
+equalNeighbors([
+    ['test', 'yes', 'yo', '6'],
+    ['well', 'done', 'yo', '6'],
+    ['not', 'done', 'yet', '5']
+]);

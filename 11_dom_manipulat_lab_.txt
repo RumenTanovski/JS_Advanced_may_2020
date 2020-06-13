@@ -1,0 +1,176 @@
+//1 List of Items
+
+function addItem() {
+        let text = document.getElementById('newItemText').value;
+        let li = document.createElement("li");
+        li.appendChild(document.createTextNode(text));
+        document.getElementById("items").appendChild(li);
+          //clearing the input:
+        document.getElementById('newItemText').value = '';
+      } 
+	  
+	  
+// 2 Add Delete
+function addItem() {
+
+  //Създаваш референции
+  let newElement = document.getElementById("newText").value;
+  let list = document.getElementById("items");
+  
+  //Ако е празен приключваш
+  if (newElement.length === 0) return;
+  
+  //Създаваш и попълваш
+  let listItem = document.createElement("li");
+  listItem.textContent = newElement;
+
+  //Създаваш , попълваш
+  let remove = document.createElement("a");
+  let linkText = document.createTextNode("[Delete]");
+  remove.appendChild(linkText);
+  //добавя атрибут, след # може id или Url или ... 
+  remove.href = "#";
+
+  //закачаш Listener
+  remove.addEventListener("click", deleteItem,newElement.value = '');
+
+  //добавяш последователно децата
+  listItem.appendChild(remove);
+  list.appendChild(listItem);
+
+  function deleteItem() {
+    listItem.remove();
+  }
+}
+
+
+// 3 Delete from table
+function deleteByEmail() {
+    //прави референция към клетките в List
+    const cells = document.querySelectorAll("td");
+        //да се посочи че е първият елемент 
+    const targetEmail = document.getElementsByName("email")[0].value;
+    const result = document.getElementById("result");
+
+    let isFound = false;
+
+    for (const cell of cells) {
+        if (cell.innerHTML === targetEmail) {
+            //изтрива родителя на cell барабар с него и другите деца
+            cell.parentNode.parentNode.removeChild(cell.parentNode);
+            isFound = true;
+        }
+    }
+
+    result.innerHTML = (isFound === false ? "Not found." : "Deleted.");
+    //document.getElementsByName("email")[0].value = "";
+}
+
+
+//     4. Stopwatch
+
+function stopwatch() {
+	
+    //Вземане референция и закачане на Listener
+    let startButton = document.getElementById('startBtn');
+    startButton.addEventListener('click', start);
+
+    let stopButton = document.getElementById('stopBtn');
+    stopButton.addEventListener('click', stop);
+
+    //Вземане на референция към прозореца с времето
+    let outputBox = document.getElementById('time');
+    let timer = null;
+
+    function stop() {
+        stopButton.disabled = true;
+        startButton.disabled = false;
+
+		// Спира setInterval
+        clearInterval(timer);
+    }
+
+    function start() {
+        startButton.disabled = true
+        stopButton.disabled = false;
+
+        let seconds = 0;
+
+        //изпънявай функцията през 1 секунда
+        timer = setInterval(tick, 1000);
+
+        outputBox.textContent = '00:00';
+
+        function tick() {
+            seconds++;
+
+            let currentMinute = ('0' + Math.floor(seconds / 60)).slice(-2);
+            let currentSecond = ('0' + seconds % 60).slice(-2);
+
+            outputBox.textContent = `${currentMinute}:${currentSecond}`;
+        }
+    }
+}
+
+
+//    5. Mouse Gradient
+
+function attachGradientEvents() {
+    
+    let gradientElem = document.getElementById('gradient');
+
+    gradientElem.addEventListener('mousemove',
+    
+    function (event) {
+            let pct = (+event.offsetX) / +gradientElem.clientWidth;
+
+            let percentage = Math.floor(pct * 100);
+
+            document.getElementById('result').textContent = percentage + '%';
+        });
+}
+
+
+// 6. Highlight Active
+
+function focus() {
+	
+    let divElements = document.querySelectorAll('div div');
+	
+    for (const divElem of divElements) {
+		
+      divElem.addEventListener('focus', function(){
+          divElem.classList.add('focused');
+      });
+	  
+      divElem.addEventListener('blur', function(){
+          divElem.classList.remove('focused');
+      });      
+    }
+}
+
+
+//    7. Dynamic Validation
+
+function validate() {
+    let inputBox = document.getElementById('email');
+    inputBox.addEventListener('change', performValidation);
+	
+	//<name>@<domain>.<extension>  =  e-mail
+    let pattern = /^[a-z]+@[a-z]+\.[a-z]+$/;
+
+    function performValidation() {
+        let email = this.value;
+        if (pattern.test(email)) {
+            this.classList.remove('error');
+        } else {
+            this.classList.add('error');
+        }
+    }
+}
+
+
+
+
+
+

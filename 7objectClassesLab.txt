@@ -1,0 +1,186 @@
+//    1. Towns to JSON
+
+function townsToJSON(arr) {
+    let arrRes = [];
+    for (let i = 1; i < arr.length; i++) {
+        let arrCity = {};
+        let str = arr[i].substring(2, arr[i].length - 2);
+        let arrEl = str.split(" | ");
+        arrCity['Town'] = arrEl[0];
+        arrCity['Latitude'] = Number(Number(arrEl[1]).toFixed(2));
+        arrCity['Longitude'] = Number(Number(arrEl[2]).toFixed(2));
+        arrRes.push(arrCity);
+    }
+
+    let myJSON = JSON.stringify(arrRes);
+    console.log(myJSON);
+}
+
+// townsToJSON(['| Town | Latitude | Longitude |',
+//     '| Sofia | 42.696552 | 23.32601 |',
+//     '| Beijing | 39.913818 | 116.363625 |'
+// ]);
+
+//    1. Sum by Town
+
+function sumByTown(arr) {
+    let objRes = {};
+
+    for (let j = 0; j < arr.length - 1; j += 2) {
+        let city = arr[j];
+        let num = Number(arr[j + 1]);
+
+        if (objRes.hasOwnProperty(city)) {
+            objRes[city] += num;
+        } else {
+            objRes[city] = num;
+        }
+
+    }
+
+    let myJSON = JSON.stringify(objRes);
+    console.log(myJSON);
+}
+
+//sumByTown(['Sofia', '20', 'Varna', '3', 'Sofia', '5', 'Varna', '4']);
+
+
+//    2. Populations in Towns
+
+function populationInTowns(arr) {
+    let objRes = {};
+
+    for (let i = 0; i < arr.length; i++) {
+        let cityPopulation = arr[i].split(" <-> ");
+        let city = cityPopulation[0];
+        let num = Number(cityPopulation[1]);
+
+        if (objRes.hasOwnProperty(city)) {
+            objRes[city] += num;
+        } else {
+            objRes[city] = num;
+        }
+    }
+
+    for (const key in objRes) {
+        console.log(`${key} : ${objRes[key]}`)
+    }
+}
+
+// populationInTowns(['Istanbul <-> 100000',
+//     'Honk Kong <-> 2100004',
+//     'Jerusalem <-> 2352344',
+//     'Mexico City <-> 23401925',
+//     'Istanbul <-> 1000'
+// ]);
+
+
+//    3. From JSON to HTML Table
+
+function jsonToHtmlTable(json) {
+    let arr = JSON.parse(json);
+    let outputArr = ["<table>"];
+    outputArr.push(makeKeyRow(arr));
+    arr.forEach((obj) => outputArr.push(makeValueRow(obj)));
+    outputArr.push("</table>");
+
+    function makeKeyRow(arr) {
+        let result = '<tr>';
+
+        for (const key in arr[0]) {
+            result += `<th>${key}</th>`;
+        }
+
+        result += '</tr>';
+
+        return result;
+    };
+
+    function makeValueRow(obj) {
+        let result = '   <tr>';
+
+        for (const key in obj) {
+            let currentValue = escapeHtml(obj[key].toString());
+            result += `<td>${currentValue}</td>`;
+        }
+
+        result += '</tr>'
+        return result;
+    };
+
+    function escapeHtml(string) {
+        let stringResult = '';
+        for (let i = 0; i < string.length; i++) {
+            if (string[i] === '&') {
+                stringResult += '&amp;';
+            } else if (string[i] === '<') {
+                stringResult += '&lt;';
+            } else if (string[i] === '>') {
+                stringResult += '&gt;';
+            } else {
+                stringResult += string[i];
+            }
+        }
+        return stringResult;
+    };
+
+    console.log(outputArr.join('\n'));
+}
+
+//jsonToHtmlTable(['[{"Name":"Tomatoes & Chips","Price":2.35},{"Name":"J&B Chocolate","Price":0.96}]']);
+
+
+//    4. Lowest Prices in Cities
+
+function lowestPricesInCities(params) {
+    let stat = new Map();
+
+    for (const row of params) {
+        let [town, product, price] = row.split('|').map(e => e.trim());
+
+        if (!stat.get(product)) {
+            stat.set(product, new Map());
+        }
+
+        stat.get(product).set(town, Number(price));
+    }
+
+    let result = "";
+
+    for (const productWithPrice of stat) {
+        let lowestPrice = [...productWithPrice[1]].sort((a, b) => a[1] - b[1])[0]; // [a, [b, c]]
+        result += `${productWithPrice[0]} -> ${lowestPrice[1]} (${lowestPrice[0]})\n`;
+    }
+
+    console.log(result.trim());
+}
+
+// lowestPricesInCities(['Sample Town | Sample Product | 1000',
+// 'Sample Town | Orange | 2',
+// 'Sample Town | Peach | 1',
+// 'Sofia | Orange | 3',
+// 'Sofia | Peach | 2',
+// 'New York | Sample Product | 1000.1',
+// 'New York | Burger | 10']);
+
+
+//    5. Person
+
+class Person{
+    constructor(firstName, lastName, age, email){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.email = email;
+    }
+
+    toString(){
+        return `${this.firstName} ${this.lastName} (age: ${this.age}, email: ${this.email})`;
+    }
+}
+let person = new Person('Anna', 'Simpson', 22, 'anna@yahoo.com');
+console.log(person.toString());
+
+
+
+

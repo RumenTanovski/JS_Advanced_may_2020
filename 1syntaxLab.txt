@@ -1,0 +1,193 @@
+
+//     1. String Length
+function sumAndAverage(str1, str2, str3){
+    var sumLength;
+    var averageLength;
+
+    sumLength = str1.length+ str2.length+str3.length;
+    averageLength = Math.floor(sumLength/3);
+console.log(sumLength);
+console.log(averageLength);
+}
+
+// sumAndAverage('pasta', '5', '22.3');
+
+//     2. Math Operations
+
+function mathOperation(num1, num2, opr){
+    //var result;
+    //switch(opr){
+    //    case '+':
+    //        result= num1+num2; break;
+    //    case '-':
+    //        result = num1-num2; break;
+    //    case '*':
+    //           result=num1*num2; break;
+    //    case '/':
+    //       result= num1/num2; break;
+    //    case '%':
+    //        result= num1%num2; break;
+    //    case '**':
+    //        result= num1**num2; break;             
+    //}
+    //console.log(result);
+
+    const cases= {
+        '+': (num1,num2) => num1+num2,
+        '-': (num1,num2) => num1-num2,
+        '*': (num1,num2) => num1*num2,
+        '/': (num1,num2) => num1/num2,
+        '%': (num1,num2) => num1%num2,
+        '**': (num1,num2) => num1**num2    
+    };
+
+return console.log(cases[opr](num1,num2));
+}
+
+//mathOperation(5, 6, '+');
+
+//     3. Sum of Numbers N…M
+
+function sumNM(n,m){
+    let num1=+n;
+    let num2=Number(m);
+    let result=0;
+
+    for (let i=num1; i<=num2; i++){
+        result +=i;
+    }
+
+    return console.log(result);
+}
+
+//sumNM('-8','20');
+
+
+//     4. Largest Number
+
+function largestNum(num1,num2,num3){
+    let result=0;
+
+    if (num1>num2 && num1>num3){
+        result = num1;
+    }
+
+    if (num2>num1 && num2>num3){
+        result = num2;
+    }
+
+    if (num3>num1 && num3>num1){
+        result = num3;
+    }
+
+    return console.log('The largest number is '+result+'.');
+}
+
+//largestNum(-3, -5, -22.5);
+
+
+//     5. Circle Area
+
+function circleArea(input){
+
+    let result=0;
+    let inputType = typeof(input);
+
+    if (inputType === 'number'){
+        result=Math.pow(input,2) * Math.PI;
+        console.log(result.toFixed(2));
+    }
+    else{
+        console.log('We can not calculate the circle area, because we receive a ' + inputType + '.');
+    }
+}
+
+//    6. Square of Stars
+
+function squareOfStars(input){
+    let inputType = typeof(input);
+
+    if (inputType === 'number'){
+        let num= Number(input);
+        
+        let line='';
+        for (let i=1; i<=num; i++ ){
+            line+='* ';
+        }
+
+        for (let i=1; i<=num; i++){
+        
+            console.log(line);
+        }
+    }
+    else{
+        let line='* * * * *';
+        for (let i=1; i<=5; i++){
+            console.log(line);
+        }
+    }
+}
+
+
+//    7. Day of Week
+
+function dayOfWeek(input){
+    let result = 0;
+
+    if (input==='Monday'){
+        result=1;
+    }
+
+    if (input==='Tuesday'){
+        result=2;
+    }
+
+    if (input==='Wednesday'){
+        result=3;
+    }
+
+    if (input==='Thursday'){
+        result=4;
+    }
+
+    if (input==='Friday'){
+        result=5;
+    }
+
+    if (input==='Saturday'){
+        result=6;
+    }
+
+    if (input==='Sunday'){
+        result=7;
+    }
+
+    if (result === 0){
+        console.log('error');
+    }
+    else{
+        console.log(result); 
+    }
+}
+
+
+//     8. Aggregate Elements
+function aggregateElements(arr){
+    let sum1 =0;
+    let sum2=0;
+
+    let concatResult='';
+
+    for (var i=0; i<arr.length; i++){
+        const curentItem = arr[i];
+        sum1 +=curentItem ;
+        sum2+= 1/curentItem;
+        concatResult += curentItem;
+    }
+    console.log(sum1);
+    console.log(sum2);
+    console.log(concatResult);
+}
+
+aggregateElements([1,2,3]);
+

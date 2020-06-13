@@ -1,0 +1,398 @@
+//    1.  Heroic Inventory
+
+function heroicInventory(arr) {
+    let arrRes = [];
+    for (const iterator of arr) {
+        let [name, level, items] = iterator.split(" / ");
+
+        level = Number(level);
+        items = items ? items.split(', ') : [];
+        arrRes.push({
+            name,
+            level,
+            items
+        });
+    }
+
+    let myJSON = JSON.stringify(arrRes);
+    console.log(myJSON);
+}
+
+// heroicInventory(['Isacc / 25 / Apple, GravityGun',
+// 'Derek / 12 / BarrelVest, DestructionSword',
+// 'Hes / 1 / Desolator, Sentinel, Antara']);
+
+//    2. JSON’s Table
+
+function jsonSTable(arrJson) {
+    let strResult = '<table>\n';
+    let editItem = str => str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+
+    for (const iterator of arrJson) {
+        let obj = JSON.parse(iterator);
+        //let json = JSON.parse(item);
+
+        //let [name, position, salary] = [obj.name, obj.position, obj.salary];
+        strResult += '\t<tr>\n';
+        strResult = strResult + `\t\t<td>${editItem(obj.name)}</td>\n`;
+        strResult = strResult + `\t\t<td>${editItem(obj.position)}</td>\n`;
+        strResult = strResult + `\t\t<td>${Number(obj.salary)}</td>\n`;
+
+        strResult += '\t</tr>\n';
+
+    }
+    strResult += '</table>';
+    console.log(strResult);
+}
+
+// jsonSTable(['{"name":"Pesho","position":"Promenliva","salary":100000}',
+//     '{"name":"Teo","position":"Lecturer","salary":1000}',
+//     '{"name":"Georgi","position":"Lecturer","salary":1000}'
+// ]);
+
+
+//    3. Cappy Juice
+
+function cappyJuice(arrStr) {
+    let objRes = {};
+
+
+
+    for (const iterator of arrStr) {
+        let [fruit, quantityStr] = iterator.split(" => ");
+        let quantityNum = Number(quantityStr);
+
+        if (objRes.hasOwnProperty(fruit)) {
+            objRes[fruit] += quantityNum;
+        } else {
+            objRes[fruit] = quantityNum;
+        }
+    }
+
+    for (const key in objRes) {
+        objRes[key] = Math.floor(objRes[key] / 1000);
+
+        if (objRes[key] !== 0) {
+            console.log(`${key} => ${objRes[key]}`);
+        }
+    }
+}
+
+function solve(input) {
+    let data = {};
+    let bottles = new Map();
+
+    for (const line of input) {
+        let items = line.split(" => ");
+        let juice = items[0];
+        let quantity = Number(items[1]);
+
+        if (!data.hasOwnProperty(juice)) {
+            data[juice] = 0;
+        }
+
+        data[juice] += quantity;
+
+        if (data[juice] >= 1000) {
+            let bottlesCount = Math.floor(data[juice] / 1000);
+
+            if (bottles.get(juice)) {
+                bottles.set(juice, bottlesCount + bottles.get(juice));
+            } else {
+                bottles.set(juice, bottlesCount);
+            }
+        }
+
+        data[juice] = data[juice] % 1000;
+    }
+
+    console.log([...bottles]
+        .map(b => `${b[0]} => ${b[1]}`)
+        .join("\n"));
+}
+
+//  cappyJuice(['Kiwi => 234',
+// 'Pear => 2345',
+// 'Watermelon => 3456',
+// 'Kiwi => 4567',
+// 'Pear => 5678',
+// 'Watermelon => 6789']);
+
+
+//    4. Store Catalogue
+
+function storeCatalogue(inputArr) {
+    const catalog = {};
+
+    //obhogdane vhod
+    for (const line of inputArr) {
+        const [product, price] = line.split(' : ');
+
+        // take first letter
+        const letter = product[0];
+
+        if (catalog.hasOwnProperty(letter) === false) {
+            catalog[letter] = {};
+        }
+
+        catalog[letter][product] = price;
+    }
+
+    // Array of sort by first letter
+    const sortedKeys = Object.keys(catalog).sort((a, b) => a.localeCompare(b));
+
+    for (const key of sortedKeys) {
+        //print letter, first key
+        console.log(key);
+
+        //Array of sort products, second key
+        const sortedProducts = Object.keys(catalog[key]).sort((a, b) => a.localeCompare(b));
+        for (let product of sortedProducts) {
+            //print products
+            console.log(`  ${product}: ${catalog[key][product]}`);
+        }
+    }
+}
+
+// storeCatalogue(['Appricot : 20.4',
+// 'Fridge : 1500',
+// 'TV : 1499',
+// 'Deodorant : 10',
+// 'Boiler : 300',
+// 'Apple : 1.25',
+// 'Anti-Bug Spray : 15',
+// 'T-Shirt : 10']);
+
+
+//    5. Auto-Engineering Company
+
+function autoCompany(inputArr) {
+    const cars = {};
+
+    for (const line of inputArr) {
+        const [brand, model, productsStr] = line.split(' | ');
+        const productsNum = Number(productsStr);
+
+        if (cars.hasOwnProperty(brand) === false) {
+            cars[brand] = {};
+        }
+
+        if (cars[brand].hasOwnProperty(model) === false) {
+            cars[brand][model] = productsNum;
+        } else {
+            cars[brand][model] += productsNum;
+        }
+    }
+
+    const brands = Object.keys(cars);
+    for (let brand of brands) {
+        console.log(brand);
+
+        const models = Object.keys(cars[brand]);
+        for (let model of models) {
+            console.log(`###${model} -> ${cars[brand][model]}`)
+        }
+    }
+}
+
+
+// autoCompany(['Audi | Q7 | 1000',
+//     'Audi | Q6 | 100',
+//     'BMW | X5 | 1000',
+//     'BMW | X6 | 100',
+//     'Citroen | C4 | 123',
+//     'Volga | GAZ-24 | 1000000',
+//     'Lada | Niva | 1000000',
+//     'Lada | Jigula | 1000000',
+//     'Citroen | C4 | 22',
+//     'Citroen | C5 | 10'
+// ]);
+
+
+//    6. System Components
+
+function systemComponent(inputArr) {
+    const catalog = {};
+
+    for (const line of inputArr) {
+        const [system, component, sub] = line.split(' | ');
+
+        if (catalog.hasOwnProperty(system) === false) {
+            catalog[system] = {};
+        }
+
+        if (catalog[system].hasOwnProperty(component) === false) {
+            catalog[system][component] = [];
+        }
+
+        catalog[system][component].push(sub);
+    }
+
+    // sort
+
+    Object.entries(catalog).sort((a, b) => {
+        return Object.keys(b[1].length - Object.keys(a[1]).length || a[0].localeCompare(b[0]));
+    }).forEach(([system, component]) => {
+        // print
+        console.log(system);
+        Object.entries(component)
+            .sort((a, b) => b[1].length - a[1].length)
+            .forEach(([name, sub]) => {
+                console.log('|||' + name);
+                sub.forEach(s => {
+                    console.log('||||||' + s);
+                });
+            });
+    });
+}
+
+
+// systemComponent(['SULS | Main Site | Home Page',
+// 'SULS | Main Site | Login Page',
+// 'SULS | Main Site | Register Page',
+// 'SULS | Judge Site | Login Page',
+// 'SULS | Judge Site | Submittion Page',
+// 'Lambda | CoreA | A23',
+// 'SULS | Digital Site | Login Page',
+// 'Lambda | CoreB | B24',
+// 'Lambda | CoreA | A24',
+// 'Lambda | CoreA | A25',
+// 'Lambda | CoreC | C4',
+// 'Indice | Session | Default Storage',
+// 'Indice | Session | Default Security']);
+
+
+//    7. Data Class
+
+class Request {
+    constructor(method, uri, version, message) {
+        this.method = method;
+        this.uri = uri;
+        this.version = version;
+        this.message = message;
+        this.response = undefined;
+        this.fulfilled = false;
+    }
+}
+
+
+//     8. Tickets
+
+function ticketsSolve(tickets, criteria) {
+    class Ticket {
+        constructor(descriptor) {
+            const [destination, price, status] = descriptor.split('|');
+            this.destination = destination;
+            this.price = Number(price);
+            this.status = status;
+        }
+    }
+
+    const comparator = {
+        destination : (a, b) => a.destination.localeCompare(b.destination),
+        price : (a,b) => a-b,
+        status : (a,b) => a.status.localeCompare(b.status)
+    };
+
+    return tickets.map(t => new Ticket(t)).sort(comparator[criteria]);
+}
+
+// console.log(ticketsSolve(['Philadelphia|94.20|available',
+// 'New York City|95.99|available',
+// 'New York City|95.99|sold',
+// 'Boston|126.20|departed'],
+// 'destination'));
+
+
+// 9. Sorted List
+class SortedList {
+    constructor() {
+        this._arr = [];
+        this.size = 0;
+    }
+
+    add(element) {
+        this._arr.push(element);
+        this._arr.sort((a, b) => a - b);
+        this.size++;
+        return this._arr;
+    };
+
+    remove(index) {
+        if (index >= 0 && index < this._arr.length) {
+            this._arr.splice(index, 1);
+            this._arr.sort((a, b) => a - b);
+            this.size--;
+            return this._arr;
+        }
+    }
+
+    get(index) {
+        if (index >= 0 && index < this._arr.length) {
+            return this._arr[index];
+        }
+    }
+}
+
+// let list = new List();
+// list.add(5);
+// list.add(6);
+// list.add(7);
+// console.log(list.get(1));
+// list.remove(1);
+// console.log(list.get(1));
+
+//10. Length Limit
+class Stringer {
+    constructor(string, length) {
+        this.innerString = string;
+        this.innerLength = length;
+    }
+
+    increase(length) {
+        this.innerLength += length;
+
+        if (this.innerLength < 3) {
+            this.innerLength = 0;
+        }
+    }
+
+    decrease(length) {
+        this.innerLength -= length;
+
+        if (this.innerLength < 3) {
+            this.innerLength = 0;
+        }
+    }
+
+    toString() {
+        let result = "";
+
+        if (this.innerLength === 0) {
+            result += "...";
+        } else if (this.innerString.length > this.innerLength) {
+            result += this.innerString.substr(0, this.innerLength) + "...";
+        }
+
+        return result;
+    }
+}
+
+let test = new Stringer("Test", 5);
+console.log(test.toString()); // Test
+
+test.decrease(3);
+console.log(test.toString()); // Te...
+
+test.decrease(5);
+console.log(test.toString()); // ...
+
+test.increase(4);
+console.log(test.toString()); // Tes
+
+

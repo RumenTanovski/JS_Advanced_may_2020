@@ -1,0 +1,224 @@
+//    1. Fruit
+function fruit(fruit, weightGrams, priceKg) {
+    //преобразуване мерни еденици
+    let weight = weightGrams / 1000;
+
+    //пресмятане
+    let money = weight * priceKg;
+
+    //форматиране, печат
+    console.log(`I need $${money.toFixed(2)} to buy ${weight.toFixed(2)} kilograms ${fruit}.`);
+}
+//fruit('orange', 2500, 1.80);
+
+
+//    2. Greatest Common Divisor - GCD
+
+function greatestCommonDivisor(num1, num2) {
+
+    const small = Math.min(num1, num2);
+
+    let gcd = 1;
+
+    for (let i = 1; i <= small; i++) {
+        if (num1 % i == 0 && num2 % i == 0) {
+            gcd = i;
+        }
+    }
+    console.log(gcd);
+}
+//greatestCommonDivisor(15, 5);
+
+//    3. Same Numbers
+
+function sameNumbers(num) {
+    let isTrue = true;
+    let numAsString = num.toString();
+    let sum = 0;
+
+    for (let i = 0; i < numAsString.length; i++) {
+        if (i < numAsString.length - 1) {
+            if (numAsString[i] != numAsString[i + 1]) {
+                isTrue = false;
+            }
+        }
+
+        sum += Number(numAsString[i]);
+
+    }
+    console.log(isTrue);
+    console.log(sum);
+}
+//sameNumbers(2222222);
+
+
+//    4. Time to Walk
+function timeToWalk(footNum, footLength, speed) {
+    const distanceMetri = footNum * footLength;
+
+    let time = Math.round(distanceMetri / speed * 3.6);
+    time += Math.floor(distanceMetri / 500) * 60;
+
+    const seconds = time % 60;
+    time -= seconds;
+
+    time /= 60;
+    const minutes = time % 60;
+    time -= minutes;
+
+    const hours = time / 60;
+
+    console.log(`${pad(hours)}:${pad(minutes)}:${pad(seconds)}`);
+
+    function pad(num) {
+        return ('0' + num).slice(-2);
+    }
+}
+//timeToWalk(2564, 0.70, 5.5);
+
+//    5. Road Radar
+
+function roadRadar([speed, area]) {
+    let output = ' ';
+
+    switch (area) {
+        case 'motorway':
+            output = check((speed-130));    
+            break;
+        case 'interstate':
+            output = check((speed-90));    
+            break;
+        case 'city':
+            output = check((speed-50));    
+            break; 
+        case 'residential':
+            output = check((speed-20));    
+            break;      
+    }
+    
+    console.log(output);
+     
+    function check(num){
+        if (num>=1 && num<=20){
+            return 'speeding';
+        }
+        if (num>=1 && num<=40){
+            return 'excessive speeding';
+        }
+        if (num>=1 ){
+            return 'reckless driving';
+        }
+        return '';
+    }
+}
+
+//roadRadar([40, 'city']);
+
+let arr = [[4, 5, 6],
+           [6, 5, 4],
+           [5, 5, 5]];
+arr.forEach(printRow);
+function printRow(row){
+   // console.log(row);
+    row.forEach(printNumber);
+};
+
+function printNumber(num){
+    console.log(num);
+};
+
+
+//     6. Cooking by Numbers
+function cookingNumbers(arr) {
+    let result = Number(arr.shift());
+
+    let cases = {
+        'chop': (num) => num / 2,
+        'dice': (num) => Math.sqrt(num),
+        'spice': (num) => num++,
+        'bake': (num) => num * 3,
+        'fillet': (num) => num * 0.8
+    };
+
+    for (let i = 0; i <= arr.length - 1; i++) {
+        let com = arr[i];
+
+        switch (com) {
+            case 'chop':
+                result = result / 2;
+                break;
+            case 'dice':
+                result = Math.sqrt(result);
+                break;
+            case 'spice':
+                result++;
+                break;
+            case 'bake':
+                result = result * 3;
+                break;
+            case 'chop':
+                result = result / 2;
+                break;
+            case 'fillet':
+                result = result * 0.8;
+                break;
+        }
+
+        console.log(result);
+    }
+}
+
+//cookingNumbers(['32', 'chop', 'chop', 'chop', 'chop', 'chop']);
+
+//    7. Validity Checker
+function validityChecker(arr) {
+
+    const x1 = arr[0];
+    const y1 = arr[1];
+    const x2 = arr[2];
+    const y2 = arr[3];
+
+    let distance1 = Math.sqrt(x1 * x1 + y1 * y1);
+    let distance2 = Math.sqrt(x2 * x2 + y2 * y2);
+    let distance3 = Math.sqrt(Math.abs(x1 - x2) * Math.abs(x1 - x2) + Math.abs(y1 - y2) * Math.abs(y1 - y2));
+
+    if (Number.isInteger(distance1)) {
+        console.log(`{${x1}, ${y1}} to {0, 0} is valid`);
+    } else {
+        console.log(`{${x1}, ${y1}} to {0, 0} is invalid`);
+    }
+
+    if (Number.isInteger(distance2)) {
+        console.log(`{${x2}, ${y2}} to {0, 0} is valid`);
+    } else {
+        console.log(`{${x2}, ${y2}} to {0, 0} is invalid`);
+    }
+
+    if (Number.isInteger(distance3)) {
+        console.log(`{${x1}, ${y1}} to {${x2}, ${y2}} is valid`);
+    } else {
+        console.log(`{${x1}, ${y1}} to {${x2}, ${y2}} is invalid`);
+    }
+
+}
+
+//validityChecker([3, 0, 0, 4]);
+
+
+//    8. * Calorie Object
+function calorieObject(arr) {
+    let obj ={};
+
+    for (let i = 0; i <= arr.length-1; i += 2) {
+        obj[arr[i]] = Number(arr[i + 1]);
+    }
+
+    console.log(obj);
+}
+
+calorieObject(['Yoghurt', '48', 'Rise', '138', 'Apple', '52']);
+
+
+
+
+

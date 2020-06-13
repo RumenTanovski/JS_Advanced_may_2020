@@ -1,0 +1,208 @@
+
+// 1 Compani
+class Company {
+    constructor() {
+        this.departments = [];
+    }
+
+    addEmployee(username, salary, position, department) {
+        this._validateParam(username);
+        this._validateParam(salary);
+        this._validateParam(position);
+        this._validateParam(department);
+
+        if (salary < 0) {
+            throw new Error('Invalid input');
+        }
+
+        //откриване на рефернция към отдела
+        let current = this.departments.find(d => d.name === department);
+
+        //ако отдела не съществува се създава
+        if(current === undefined){
+            current = {
+                name: department,
+                employees: []
+            };
+            this.departments.push(current);
+        }
+
+        //добавяме работника към отдела
+        current.employees.push({
+            username,
+            salary,
+            position
+        });
+
+        return `New employee is hired. Name: ${username}. Position: ${position}`;
+    }
+
+    bestDepartment(){
+        const departments = this.departments.map(d => {
+            const dep = {
+                name: d.name,
+                employees: d.employees.slice(),
+            };
+            let total = 0;
+
+            for(let employee of dep.employees){
+                total +=employee.salary;
+            }
+
+            dep.averageSalary = total/dep.employees.length;
+            
+            return dep;
+        });
+
+        departments.sort((a,b) => b.averageSalary - a.averageSalary);
+
+        //вземаме първият
+        const best = departments[0];
+        if (best !== undefined){
+
+            best.employees.sort((a,b) => b.salary - a.salary || a.username.localeCompare(b.username));
+
+            // връщаме оформен низ
+            const result = [
+                `Best Department is: ${best.name}`,
+                `Average salary: ${best.averageSalary.toFixed(2)}`,
+            ];
+            best.employees.forEach(e =>result.push(`${e.username} ${e.salary} ${e.position}`));
+            
+            return result.join('\n');
+        }
+    }
+    _validateParam(param){
+        if (param ==='' || param === undefined || param === null){
+            throw new Error('Invalid input!');
+        }
+    }
+}
+
+let c = new Company();
+c.addEmployee("Stanimir", 2000, "engineer", "Construction");
+c.addEmployee("Pesho", 1500, "electrical engineer", "Construction");
+c.addEmployee("Slavi", 500, "dyer", "Construction");
+c.addEmployee("Stan", 2000, "architect", "Construction");
+c.addEmployee("Stanimir", 1200, "digital marketing manager", "Marketing");
+c.addEmployee("Pesho", 1000, "graphical designer", "Marketing");
+c.addEmployee("Gosho", 1350, "HR", "Human resources");
+console.log(c.bestDepartment());
+
+
+
+// 2 Fibonaci
+function getFibonator(){
+    let current = 0;
+    let next = 1 ;
+
+    return fibonator;
+
+    function fibonator(){
+        let newNumber = current+ next;
+        current = next;
+        next = newNumber;
+        return current;
+    }
+}
+
+// 1. return fibonator; 2.със fib=... правим clousure
+let fib = getFibonator();
+console.log(fib()); // 1
+console.log(fib()); // 1
+console.log(fib()); // 2
+console.log(fib()); // 3
+console.log(fib()); // 5
+
+// а така нищо не става
+console.log(getFibonator());//[Function: fibonator]
+console.log(getFibonator());
+console.log(getFibonator());
+console.log(getFibonator());
+console.log(getFibonator());
+
+
+// 3 Hex
+class Hex{
+    constructor(value){
+        this.value = value;
+    }
+
+    toString(){
+        return '0x' + this.value.toString(16).toUpperCase();        
+    }
+
+    valueOf(){
+        return this.value;
+    }
+
+    plus(hex){
+        return new Hex(this.value+hex);
+    }
+
+    minus(hex){
+        return new Hex(this.value - hex);        
+    }
+
+    static parse(hexValue){
+        return parseInt(hexValue, 16);
+    }
+}
+
+
+let FF = new Hex(255);
+console.log(FF.toString());
+FF.valueOf() + 1 == 256;
+let a = new Hex(10);
+let b = new Hex(5);
+console.log(a.plus(b).toString());
+console.log(a.plus(b).toString()==='0xF');
+
+
+
+//4. Table
+function solve() {
+
+    //добавяме Листенер на тялото на таблицата
+    const tbody = document.querySelector('tbody');
+    const items = tbody.querySelectorAll('tr');
+
+    tbody.addEventListener('click', parseTable);
+
+    function parseTable(e){
+        // намиране на избрания елемент
+        const row = e.target.parentNode;
+
+        //проверява избарният дали  е ред
+        if(row.nodeName ==='TR'){
+            //ако елмента свети гасим го
+            if (row.style.backgroundColor !==''){
+                row.style.backgroundColor = '';
+           
+            } else {
+                //гасим всички и светваме тоа
+                [...items].forEach( i=> i.style.backgroundColor = '');
+                row.style.backgroundColor = '#413f5e';
+            }
+        }
+    }
+	
+//5. Next article
+
+function getArticleGenerator(articles) {
+    const content = document.querySelector('#content');
+
+    return showNext;
+
+    function showNext() {
+        if (articles.length > 0) {
+            const article = document.createElement('article');
+            article.textContent = articles.shift();
+            content.appendChild(article);
+        }
+    }
+}
+
+
+
+
