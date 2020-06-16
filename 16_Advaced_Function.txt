@@ -1,5 +1,5 @@
 
-//    1. Sort Array
+//    1. Sort Array.
 function sortArray(arr,strCommand){
     arr.sort((a,b)=> a-b);
     if(strCommand === 'desc'){

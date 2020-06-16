@@ -1,5 +1,5 @@
 
-// 1 Compani
+// 1 Company
 class Company {
     constructor() {
         this.departments = [];
