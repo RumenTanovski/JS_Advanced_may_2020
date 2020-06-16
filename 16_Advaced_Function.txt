@@ -1,0 +1,203 @@
+
+//    1. Sort Array
+function sortArray(arr,strCommand){
+    arr.sort((a,b)=> a-b);
+    if(strCommand === 'desc'){
+        arr.reverse();
+    }
+    //console.log(arr.join());
+    return arr;
+}
+
+//sortArray([14, 7, 17, 6, 8], 'desc');
+
+
+//    2. Argument Info
+
+function argumentInfo(){
+    
+    //създаваме обекта 
+    const argTypes={};
+
+    //обхождаме аргументите, които са в arguments-ключова дума
+    for (let arg of arguments) {
+        //печат ключ стойност
+        const type = typeof arg;
+        console.log(`${type}: ${arg}`);
+
+        //броим типа на аргументите
+        if(argTypes[type] === undefined){
+            argTypes[type] =0;
+        }
+        argTypes[type]++;        
+    }
+
+    //печатаме броя              desc sort по value                 
+    Object.entries(argTypes).sort((a,b) => b[1] - a[1]).forEach(e => console.log(`${e[0]} = ${e[1]}`));
+}
+
+//argumentInfo('cat', 42,23, function () { console.log('Hello world!'); });
+
+
+//     3. Personal BMI
+
+function personalBMI(name, age, weight, height) {
+    let bmi = Math.round(weight / (height / 100) / (height / 100));
+
+    let result = {
+        name: name,
+        personalInfo: {
+            age: age,
+            weight: weight,
+            height: height
+        },
+        BMI: bmi
+    }
+
+    let status = (result.BMI < 18.5) ? 'underweight' :
+        (result.BMI < 25) ? 'normal' :
+        (result.BMI < 30) ? 'overweight' :
+        'obese';
+
+    result.status = status;
+    if (result.BMI >= 30) {
+        result.recommendation = 'admission required';
+    }
+    
+    console.log(result);
+
+    return result;
+}
+
+//personalBMI('Peter', 29, 75, 182);
+
+//     4. Vector Math
+
+var solution = (function () {
+    return {
+        add: (v1, v2) => [v1[0] + v2[0], v1[1] + v2[1]],
+        multiply: (v1, num) => [v1[0] * num, v1[1] * num],
+        length: (v1) => Math.sqrt(v1[0] * v1[0] + v1[1] * v1[1]),
+        dot: (v1, v2) => v1[0] * v2[0] + v1[1] * v2[1],
+        cross: (v1, v2) => v1[0] * v2[1] - v1[1] * v2[0]
+    }
+})();
+
+//console.log(solution.add([1, 1], [1, 0]));
+
+//    5. Breakfast Robot
+
+var solution =(function () {
+    const products = {
+        apple: {
+            carbohydrate: 1,
+            flavour: 2
+        },
+        lemonade: {
+            carbohydrate: 10,
+            flavour: 20
+        },
+        burger: {
+            carbohydrate: 5,
+            fat: 7,
+            flavour: 3
+        },
+        eggs: {
+            protein: 5,
+            fat: 1,
+            flavour: 1
+        },
+        turkey: {
+            protein: 10,
+            carbohydrate: 10,
+            fat: 10,
+            flavour: 10
+        }
+    }
+    let storage = {
+        protein: 0,
+        carbohydrate: 0,
+        fat: 0,
+        flavour: 0
+    };
+
+    function addMicroelement(microelement, quantity) {
+        storage[microelement] += quantity;
+        return 'Success';
+    }
+
+    function prepareProduct(recipe, quantity) {
+        let checkStorage = isEnough();
+
+        if (checkStorage === 'Success') {
+            cook();
+        }
+
+        return checkStorage;
+
+        function cook() {
+            for (let microelement in products[recipe]) {
+                let needed = products[recipe][microelement] * quantity;
+                storage[microelement] -= needed;
+            }
+        }
+
+        function isEnough() {
+            let result = 'Success';
+
+            for (let microelement in products[recipe]) {
+                let needed = products[recipe][microelement] * quantity;
+
+                if (storage[microelement] < needed) {
+                    result = `Error: not enough ${microelement} in stock`;
+                    break;
+                }
+            }
+
+            return result;
+        }
+    }
+
+    function storeInfo() {
+        return Object.keys(storage)
+            .map((key) => {
+                return `${key}=${storage[key]}`
+            })
+            .join(' ');
+    }
+    return function () {
+        let [command, type, quantity] = arguments[0].split(' ');
+        quantity = Number(quantity);
+
+        const functions = {
+            restock: () => {
+                return addMicroelement(type, quantity);
+            },
+            prepare: () => {
+                return prepareProduct(type, quantity);
+            },
+            report: () => {
+                return storeInfo();
+            }
+        }
+
+        return functions[command]();
+    };
+});
+
+// let manager = solution();
+// console.log(manager("restock flavour 50"));  // Success
+// console.log(manager("prepare lemonade 4"));
+
+
+//     6. *Functional Sum
+function add(a){
+    function sum(b){
+        a+=b;
+        return sum;
+    }
+    sum.toString = () => a;
+    return sum;
+}
+
+console.log(add(1)(6)(-3).toString());
