@@ -40,3 +40,40 @@ SoftUni
 19    Exercise: Prototypes and Inheritance
 
 20    WORKSHOP: LANDING PAGE
+
+
+Videos_JS
+https://youtu.be/Fpi7ZnacTkM	Viktor Kostadinov
+
+5 Array
+https://youtu.be/uGkLMMfi0dE
+
+
+7 Object&Classes
+https://youtu.be/l_8bx64s9zU	Iliya Idakiev
+https://youtu.be/ovmD8p7O7Sc	Viktor Kostadinov
+
+
+9 DOM
+https://youtu.be/lAk2tMaDf60	Iliya Idakiev
+https://youtu.be/2v8fJe60MmA 	Viktor Kostadinov
+
+11 DOM Manipulation	
+https://youtu.be/WX5aM-pQUVU	Iliya Idakiev
+https://youtu.be/hqq3XEF_IR4    Viktor Kostadinov
+https://youtu.be/XqRVtRFR2X0	Stamo Petkov
+
+13 Consultation Day
+izpita ot fevruari 2020
+https://youtu.be/BUwMuNEQtoo	Viktor Kostadinov
+
+14 Function context
+https://youtu.be/LBA4mwBFCXc	Iliya Idakiev
+https://youtu.be/9iUZ7Gdb2G8	Viktor Kostadinov
+
+16 Advanced Function
+https://youtu.be/IY4wUgGJZJo	Stamo Petkov
+https://youtu.be/E0rpcOdtLZU	Iliya Idakiev
+https://youtu.be/qx2qytDPI8k	Viktor Kostadinov
+
+
