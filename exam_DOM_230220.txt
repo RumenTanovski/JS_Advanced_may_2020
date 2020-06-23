@@ -1,0 +1,87 @@
+function solve() {
+
+   //намиране на нужните референции и закачне на listener
+   
+   const main = document.querySelector('main > section');
+   const archive = document.querySelector('.archive-section > ul');
+   document.querySelector('button.btn.create').addEventListener('click', createArticle);
+
+
+   function createArticle(e) {
+   
+      //туй се пише да не се рефрешне страницата
+      //щото е forma
+	  
+      e.preventDefault();
+
+      // подготовка със стойностите
+	  
+      const title = document.querySelector('#title').value;
+      const creator = document.querySelector('#creator').value;
+      const category = document.querySelector('#category').value;
+      const content = document.querySelector('#content').value;
+
+      //създават се елементи
+      //<button class="btn delete">Delete</button>
+	  
+      const deleteBtn = el('button', 'Delete', {className: 'btn delete'});
+      const archiveBtn = el('button', 'Archive', {className: 'btn archive'});
+
+      //закачат се и тук listener
+	  
+      deleteBtn.addEventListener('click', () => {
+         main.removeChild(article);
+      });
+
+      archiveBtn.addEventListener('click', () => {
+         main.removeChild(article);
+         archive.appendChild(el('li', title));
+         const items = [...archive.querySelectorAll('li')];
+         archive.innerHTML = '';
+
+         items.sort((a, b) => a.textContent.localeCompare(b.textContent))
+            .forEach(e => archive.appendChild(e));
+      });
+
+      const article = el('article', [
+         el('h1', title),
+         // <p>
+         //    "Category:"
+         //    <strong>Programing</strong>
+         // <p>
+         el('p',['Category:', el('strong',category)]),
+         el('p',['Creator:',el('strong',creator)]),
+         el('p',content),
+         //<div class="buttons">
+         el('div', [deleteBtn, archiveBtn], {className: 'buttons'})
+      ]);
+
+      //накрая се вързва към DOM
+      main.appendChild(article);
+   }
+
+
+   //type=tag, content=text/tag, attributes
+   
+   function el(type, content, attributes) {
+      const result = document.createElement(type);
+
+      if (attributes !== undefined) {
+         Object.assign(result, attributes);
+      }
+
+      if (Array.isArray(content)) {
+         content.forEach(append);
+      } else {
+         append(content);
+      }
+
+      function append(node) {
+         if (typeof node === 'string') {
+            node = document.createTextNode(node);
+         }
+         result.appendChild(node);
+      }
+      return result;
+   }
+}
