@@ -220,21 +220,21 @@ class Bank {
     }
 
     newCustomer(customer) {
-
-        if (this.allCustomers.find(c => (c.firstName == customer.firstName && c.lastName == customer.lastName) !== undefined)) {
-            throw new Error(`${customer.firstName} ${customer.lastName} is already our customer!`);
-        } else {
+        const customerCurrent = this.allCustomers.find(c => c.personalId === customer.personalId);
+        if (customerCurrent === undefined) {
             customer.totalMoney = 0;
             customer.transactions = [];
-
+            
             this.allCustomers.push(customer);
             return customer;
+        } else {
+            throw new Error(`${customer.firstName} ${customer.lastName} is already our customer!`);
         }
     }
 
     depositMoney(personalId, amount) {
-        const currentCustomer = this.allCustomers.find(c => c.personalId === personalId);
-        if (currentCustomer === undefined) {
+        const customer = this.allCustomers.find(c => c.personalId === personalId);
+        if (customer === undefined) {
             throw new Error('We have no customer with this ID!');
         }
 
@@ -243,17 +243,17 @@ class Bank {
             'amount': amount
         };
 
-        currentCustomer.transactions.push(transaction);
-        currentCustomer.totalMoney += amount;
-        return `${currentCustomer.totalMoney}$`;
+        customer.transactions.push(transaction);
+        customer.totalMoney += amount;
+        return `${customer.totalMoney}$`;
     }
 
     withdrawMoney(personalId, amount) {
-        const currentCustomer = this.allCustomers.find(c => c.personalId === personalId);
-        if (currentCustomer === undefined) {
+        const customer = this.allCustomers.find(c => c.personalId === personalId);
+        if (customer === undefined) {
             throw new Error('We have no customer with this ID!');
-        } else if (currentCustomer.totalMoney < amount) {
-            throw new Error(`${currentCustomer.firstName} ${currentCustomer.lastName} does not have enough money to withdraw that amount!`);
+        } else if (customer.totalMoney < amount) {
+            throw new Error(`${customer.firstName} ${customer.lastName} does not have enough money to withdraw that amount!`);
         }
 
         const transaction = {
@@ -261,8 +261,9 @@ class Bank {
             'amount': amount
         };
 
-        currentCustomer.totalMoney -= amount;
-        return `${currentCustomer.totalMoney}$`;
+        customer.transactions.push(transaction);
+        customer.totalMoney -= amount;
+        return `${customer.totalMoney}$`;
     }
 
     customerInfo(personalId) {
@@ -279,9 +280,9 @@ class Bank {
             'Transactions:'
         ];
 
-        for (let i = customer.transactions.length - 1; i > -1; i--) {
+        for (let i = customer.transactions.length - 1; i >= 0; i--) {
             const transaction = customer.transactions[i];
-            result.push(`${i}. ${customer.firstName} ${customer.lastName} ${transaction.action === 'd'? 'deposit': 'withdraw'} ${transaction.amount}$!`);
+            result.push(`${i+1}. ${customer.firstName} ${customer.lastName} ${transaction.action === 'd'? 'made deposit of': 'withdrew'} ${transaction.amount}$!`);
         }
 
         return result.join('\n');
@@ -309,6 +310,3 @@ console.log(bank.depositMoney(6233267, 250));
 bank.depositMoney(4151596, 555);
 
 console.log(bank.withdrawMoney(6233267, 125));
-
-
-
