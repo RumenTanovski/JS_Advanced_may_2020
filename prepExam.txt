@@ -1,3 +1,5 @@
+// 1. Task Manager (DOM)
+
 function solve() {
     document.querySelector('button#add').addEventListener('click', addToOpen);
     const open = document.querySelectorAll('section')[1].querySelector('div:nth-of-type(2)');
@@ -117,7 +119,7 @@ function solve() {
 
 
 
-
+//2.Press House
 
 function solveClasses() {
 
@@ -213,6 +215,10 @@ console.log(short.addComment("Thank god they didn't use java."));
 short.addComment("In the end JavaScripts features are executed in C++ — the underlying language.")
 console.log(short.toString()); 
 
+
+
+
+// 3.Bank
 class Bank {
     constructor(bankName) {
         this._bankName = bankName;
