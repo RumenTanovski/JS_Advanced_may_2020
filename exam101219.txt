@@ -1,0 +1,186 @@
+//DOM
+function solution() {
+
+    document.querySelectorAll('section')[0].querySelector('div>button').addEventListener('click', addToList);
+
+    const list = document.querySelectorAll('section')[1].querySelector('ul');
+    const sent = document.querySelectorAll('section')[2].querySelector('ul');
+    const discard = document.querySelectorAll('section')[3].querySelector('ul');
+
+    function addToList(e) {
+        e.preventDefault();
+
+        const input = document.querySelector('input');
+        const product = input.value;
+
+        const sendBtn = el('button', 'Send', {
+            id: 'sendButton'
+        });
+        sendBtn.addEventListener('click', addSent);
+
+        const discardBtn = el('button', 'Discard', {
+            id: 'discardButton'
+        });
+        discardBtn.addEventListener('click', addDiscard);
+
+        const li = el('li', product, {
+            className: 'gift'
+        });
+
+        li.appendChild(sendBtn);
+        li.appendChild(discardBtn);
+
+        list.appendChild(li);
+
+        //първи вариант за подредба алфабет
+        const items = [...list.querySelectorAll('li')];
+        list.innerHTML = '';
+        
+        items.sort((a, b) => a.textContent.localeCompare(b.textContent))
+            .forEach(e => list.appendChild(e));
+
+        
+        input.value = '';
+    }
+
+    function addSent(e) {
+
+        const productCurrent = e.target.parentNode;
+
+        list.removeChild(productCurrent);
+
+        const butons = productCurrent.querySelectorAll('button');
+        const but1 = butons.item(0);
+        const but2 = butons.item(1);
+        productCurrent.removeChild(but1);
+        productCurrent.removeChild(but2);
+
+        sent.appendChild(productCurrent);
+    }
+
+    function addDiscard(e) {
+        const productCurrent = e.target.parentNode;
+
+        list.removeChild(productCurrent);
+
+        const butons = productCurrent.querySelectorAll('button');
+        const but1 = butons.item(0);
+        const but2 = butons.item(1);
+        productCurrent.removeChild(but1);
+        productCurrent.removeChild(but2);
+
+        discard.appendChild(productCurrent);
+    }
+
+
+
+    //type=tag, content=text/tag, attributes
+
+    function el(type, content, attributes) {
+        const result = document.createElement(type);
+
+        if (attributes !== undefined) {
+            Object.assign(result, attributes);
+        }
+
+        if (Array.isArray(content)) {
+            content.forEach(append);
+        } else {
+            append(content);
+        }
+
+        function append(node) {
+            if (typeof node === 'string') {
+                node = document.createTextNode(node);
+            }
+            result.appendChild(node);
+        }
+        return result;
+    }
+}    
+
+
+//3.Cristmas dinner
+class ChristmasDinner {
+    constructor(budget) {
+        if (budget < 0) {
+            throw new Error('The budget cannot be a negative number');
+        }
+        this.budget = budget;
+        this.dishes = [];
+        this.products = [];
+        this.guests = {};
+    }
+
+    // get budget() {
+    //     return this._budget;
+    // }
+
+    // set budget(budget) {
+    //     if (budget < 0) {
+    //         throw new Error('The budget cannot be a negative number');
+    //     }
+    //     this._budget = budget;
+    // }
+
+    shopping([...product]) {
+        const name = product[0];
+        const price = Number(product[1]);
+
+        if (price > this.budget) {
+            throw new Error('Not enough money to buy this product');
+        }
+
+        this.budget -= price;
+        this.products.push(name);
+
+        return `You have successfully bought ${name}!`;
+    }
+
+    recipes(recipe) {
+        const productsList = recipe['productsList'];
+        const recipeName = recipe['recipeName'];
+
+        let productsExists = productsList.every(value => this.products.includes(value));
+
+        if (!productsExists) {
+            throw new Error('We do not have this product');
+        }
+
+        const dish = {
+            recipeName,
+            productsList
+        };
+
+        this.dishes.push(dish);
+        return `${recipeName} has been successfully cooked!`;
+    }
+
+    inviteGuests(name, dish) {
+        const targetDish = this.dishes.find(d => d.recipeName === dish);
+
+        if (!targetDish) {
+            throw new Error('We do not have this dish');
+        }
+
+        if (this.guests[name]) {
+            throw new Error('This guest has already been invited');
+        }
+
+        this.guests[`${name}`] = dish;
+        return `You have successfully invited ${name}!`;
+    }
+
+
+    showAttendance() {
+        const result=[];
+
+        for (const name in this.guests) {
+            const targetDish = this.dishes.find(d => d.recipeName === this.guests[name]);
+            const line =`${name} will eat ${this.guests[name]}, which consists of ${targetDish.productsList.join(", ")}`;
+            result.push(line); 
+        }
+
+        return result.join('\n');
+    }
+}
